@@ -4,7 +4,7 @@ const Stripe = require('stripe');
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const auth = require('../middleware/auth.middleware');
 const db = require('../db');
-const sendReceiptEmail = require('../utils/email'); // ✅ NEW
+const sendReceiptEmail = require('../utils/email');
 
 /* ===============================
    PAY BILL WITH STRIPE
@@ -75,7 +75,7 @@ router.post('/pay-bill', auth, async (req, res) => {
         ]
       );
 
-      // 🔹 Update bill status + paid_date
+      // 🔹 Update bill
       await db.query(
         `
         UPDATE bills
@@ -87,29 +87,40 @@ router.post('/pay-bill', auth, async (req, res) => {
       );
 
       /* ===============================
-         4️⃣ SEND RECEIPT EMAIL
+         4️⃣ GET USER DETAILS
       ================================ */
       const [users] = await db.query(
         `SELECT full_name, email FROM users WHERE id = ?`,
         [userId]
       );
 
+      /* ===============================
+         5️⃣ SEND RESPONSE FIRST ✅
+      ================================ */
+      res.status(200).json({
+        success: true,
+        message: 'Payment successful'
+      });
+
+      /* ===============================
+         6️⃣ SEND EMAIL (ASYNC SAFE) 🔥
+      ================================ */
       if (users.length > 0) {
         const user = users[0];
 
-        await sendReceiptEmail(user.email, {
+        sendReceiptEmail(user.email, {
           name: user.full_name,
           amount: bill.amount,
           billName: bill.name,
           transactionId: paymentIntent.id,
           paidDate: new Date().toLocaleString()
+        }).catch(emailError => {
+          console.error('Email failed:', emailError);
         });
       }
 
-      return res.status(200).json({
-        success: true,
-        message: 'Payment successful'
-      });
+      return; // 🔥 STOP EXECUTION
+
     }
 
     return res.status(400).json({
@@ -119,6 +130,7 @@ router.post('/pay-bill', auth, async (req, res) => {
 
   } catch (err) {
     console.error('Stripe Payment Error:', err);
+
     return res.status(500).json({
       success: false,
       message: 'Stripe payment failed'
