@@ -22,11 +22,12 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "assets": [
+ "assets": [
   "src/favicon.ico",
   "src/assets",
   "src/robots.txt",
-  "src/sitemap.xml"
+  "src/sitemap.xml",
+  "src/_redirects"
 ],
             "styles": [
               "src/styles.css"
@@ -92,9 +93,12 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
+  "src/favicon.ico",
+  "src/assets",
+  "src/robots.txt",
+  "src/sitemap.xml",
+  "src/_redirects"
+],
             "styles": [
               "src/styles.css"
             ],

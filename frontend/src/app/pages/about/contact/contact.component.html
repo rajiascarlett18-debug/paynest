@@ -4,7 +4,10 @@
   <section class="page-header">
     <div class="hero-content">
       <h1>Contact Us</h1>
-      <p>Contacting us is as simple as filling out the form below. We will respond to all customer queries within 48-hours.</p>
+      <p>
+        Contacting us is as simple as filling out the form below.
+        We will respond to all customer queries within 48 hours.
+      </p>
     </div>
   </section>
 
@@ -12,24 +15,35 @@
   <section class="contact-wrapper">
 
     <!-- FORM -->
-    <form (ngSubmit)="submitForm()">
+    <form (ngSubmit)="submitForm()" #contactForm="ngForm">
 
+      <!-- NAME -->
       <input
         type="text"
         [(ngModel)]="formData.name"
         name="name"
         placeholder="Name"
         required
+        #name="ngModel"
       />
+      <small *ngIf="name.invalid && name.touched" class="error-text">
+        Name is required
+      </small>
 
+      <!-- EMAIL -->
       <input
         type="email"
         [(ngModel)]="formData.email"
         name="email"
         placeholder="Email"
         required
+        #email="ngModel"
       />
+      <small *ngIf="email.invalid && email.touched" class="error-text">
+        Valid email is required
+      </small>
 
+      <!-- SUBJECT -->
       <input
         type="text"
         [(ngModel)]="formData.subject"
@@ -37,22 +51,28 @@
         placeholder="Subject"
       />
 
+      <!-- MESSAGE -->
       <textarea
         [(ngModel)]="formData.message"
         name="message"
         placeholder="Message"
-        required>
-      </textarea>
+        required
+        #message="ngModel"
+      ></textarea>
+      <small *ngIf="message.invalid && message.touched" class="error-text">
+        Message is required
+      </small>
 
-      <button type="submit">
-        Send Message
+      <!-- SUBMIT BUTTON -->
+      <button type="submit" [disabled]="loading || contactForm.invalid">
+        {{ loading ? 'Sending...' : 'Send Message' }}
       </button>
 
     </form>
 
     <!-- CONTACT INFO -->
     <div class="contact-info">
-      <h3>Paynest Customer Support</h3>
+      <h3>PayNest Customer Support</h3>
       <p>Email: support@paynest.com</p>
       <p>Phone: (876) 555-PAYN</p>
       <p>12 South Camp Road,</p>

@@ -40,24 +40,23 @@ app.use(
 app.use(compression());
 
 /* =========================
-   CORS CONFIGURATION
+   CORS CONFIGURATION (FIXED)
 ========================= */
-
 const allowedOrigins = [
   "http://localhost:4200",
-  process.env.FRONTEND_URL
+  process.env.FRONTEND_URL || ""
 ];
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true); // Postman / mobile apps
 
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         console.log("❌ Blocked by CORS:", origin);
-        callback(new Error("Not allowed by CORS"));
+        callback(null, false); // don't crash app
       }
     },
     credentials: true
@@ -93,8 +92,6 @@ app.use('/api/admin', adminRoutes);
 /* =========================
    HEALTH CHECK
 ========================= */
-
-// Root (browser test)
 app.get('/', (req, res) => {
   res.status(200).json({
     status: "OK",
@@ -103,7 +100,6 @@ app.get('/', (req, res) => {
   });
 });
 
-// Health check (important for frontend + monitoring)
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     success: true,
@@ -112,7 +108,7 @@ app.get('/api/health', (req, res) => {
 });
 
 /* =========================
-   404 HANDLER (IMPORTANT)
+   404 HANDLER
 ========================= */
 app.use((req, res) => {
   res.status(404).json({
@@ -125,9 +121,9 @@ app.use((req, res) => {
    GLOBAL ERROR HANDLER
 ========================= */
 app.use((err, req, res, next) => {
-  console.error("🔥 Global Error:", err.message);
+  console.error("🔥 Global Error:", err);
 
-  res.status(500).json({
+  res.status(err.status || 500).json({
     success: false,
     message: err.message || "Internal Server Error"
   });
@@ -136,7 +132,6 @@ app.use((err, req, res, next) => {
 /* =========================
    SERVER START
 ========================= */
-
 const PORT = process.env.PORT || 10000;
 
 app.listen(PORT, () => {
