@@ -4,24 +4,13 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend'); // ✅ USE RESEND
 const db = require('../db');
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
 
-/* =========================
-   EMAIL TRANSPORTER
-========================= */
-const transporter = nodemailer.createTransport({
-  host: 'smtp.mail.yahoo.com',
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 /* =========================
    REGISTER
@@ -152,7 +141,7 @@ router.post('/login', async (req, res) => {
 });
 
 /* =========================
-   FORGOT PASSWORD (🔥 FIXED)
+   FORGOT PASSWORD (FINAL FIX)
 ========================= */
 router.post('/forgot-password', async (req, res) => {
   try {
@@ -180,42 +169,35 @@ router.post('/forgot-password', async (req, res) => {
 
       const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
 
-      /* =========================
-         🔥 SEND RESPONSE FIRST
-      ========================== */
+      // ✅ ALWAYS respond immediately
       res.json({
         message: 'If an account exists, a reset link has been sent.'
       });
 
-      /* =========================
-         🔥 SEND EMAIL AFTER RESPONSE
-      ========================== */
-      transporter.sendMail({
-        from: `"PayNest Support" <${process.env.EMAIL_USER}>`,
+      // ✅ SEND EMAIL WITH RESEND
+      resend.emails.send({
+        from: 'PayNest <onboarding@resend.dev>',
         to: email,
         subject: 'Reset Your PayNest Password',
         html: `
           <div style="font-family: Arial; padding: 25px;">
-            <h2 style="color:#0066ff;">PayNest Password Reset</h2>
+            <h2 style="color:#0066ff;">Reset Your Password</h2>
             <p>Hello ${user.full_name},</p>
-            <p>You requested to reset your password.</p>
             <a href="${resetLink}" 
                style="padding:12px 24px;background:#0066ff;color:white;border-radius:6px;text-decoration:none;">
               Reset Password
             </a>
-            <p>This link expires in 30 minutes.</p>
           </div>
         `
+      }).then(() => {
+        console.log('✅ Email sent via Resend');
       }).catch(err => {
-        console.error('Email failed:', err.message);
+        console.error('❌ Resend error:', err.message);
       });
 
       return;
     }
 
-    /* =========================
-       ALWAYS RETURN SUCCESS
-    ========================== */
     res.json({
       message: 'If an account exists, a reset link has been sent.'
     });
