@@ -56,7 +56,7 @@ app.use(
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        console.log("Blocked by CORS:", origin);
+        console.log("❌ Blocked by CORS:", origin);
         callback(new Error("Not allowed by CORS"));
       }
     },
@@ -91,19 +91,19 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 
 /* =========================
-   HEALTH CHECK (IMPORTANT)
+   HEALTH CHECK
 ========================= */
 
-// ROOT (quick browser test)
+// Root (browser test)
 app.get('/', (req, res) => {
   res.status(200).json({
     status: "OK",
-    message: "PayNest API running",
+    message: "PayNest API running 🚀",
     environment: process.env.NODE_ENV || "development"
   });
 });
 
-// API HEALTH (for frontend + monitoring)
+// Health check (important for frontend + monitoring)
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     success: true,
@@ -112,10 +112,20 @@ app.get('/api/health', (req, res) => {
 });
 
 /* =========================
+   404 HANDLER (IMPORTANT)
+========================= */
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Route not found: ${req.originalUrl}`
+  });
+});
+
+/* =========================
    GLOBAL ERROR HANDLER
 ========================= */
 app.use((err, req, res, next) => {
-  console.error("Global Error:", err.message);
+  console.error("🔥 Global Error:", err.message);
 
   res.status(500).json({
     success: false,
