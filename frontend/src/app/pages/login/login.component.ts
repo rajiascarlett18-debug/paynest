@@ -12,6 +12,9 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
+  // 👁 Toggle password visibility
+  showPassword: boolean = false;
+
   // USER or ADMIN tab
   loginMode: 'USER' | 'ADMIN' = 'USER';
 
@@ -24,13 +27,20 @@ export class LoginComponent {
   ) {}
 
   /* =========================
+     TOGGLE PASSWORD VISIBILITY
+  ========================= */
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  /* =========================
      SWITCH LOGIN MODE
   ========================= */
   setMode(mode: 'USER' | 'ADMIN'): void {
 
     this.loginMode = mode;
 
-    // Clear error when switching tabs
+    // Reset errors when switching tabs
     this.errorMessage = '';
 
   }
@@ -40,40 +50,35 @@ export class LoginComponent {
   ========================= */
   login(): void {
 
+    // Prevent double submit
+    if (this.loading) return;
+
+    // Basic validation
     if (!this.email || !this.password) {
-
       this.errorMessage = 'Email and password are required';
-
       return;
-
     }
 
     this.loading = true;
     this.errorMessage = '';
 
     const loginPayload = {
-
-      email: this.email,
+      email: this.email.trim(),
       password: this.password,
       role: this.loginMode   // 🔥 IMPORTANT
-
     };
 
     this.authService.login(loginPayload).subscribe({
 
       next: (res: any) => {
 
-        const userRole = res.user?.role;
+        const userRole = res?.user?.role;
 
         // 🔐 Redirect based on role
         if (userRole === 'ADMIN') {
-
           this.router.navigate(['/admin']);
-
         } else {
-
           this.router.navigate(['/dashboard']);
-
         }
 
         this.loading = false;
@@ -82,8 +87,10 @@ export class LoginComponent {
 
       error: (err) => {
 
+        console.error('Login error:', err);
+
         this.errorMessage =
-          err.error?.message || 'Invalid email or password';
+          err?.error?.message || 'Invalid email or password';
 
         this.loading = false;
 

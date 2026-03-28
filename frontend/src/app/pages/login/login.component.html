@@ -3,35 +3,23 @@
   <!-- =============================
        TOP WARNING BAR
   ============================== -->
-
   <div class="security-warning">
-
     ⚠ Security Notice: Never share your password, PIN, or verification
     codes with anyone. PayNest will never ask for your credentials by
     email or phone.
-
   </div>
-
 
   <!-- =============================
        MAIN LOGIN SECTION
   ============================== -->
-
   <div class="login-layout">
 
-
     <!-- LEFT IMAGE -->
-
     <div class="login-image">
-
       <img src="assets/login1.jpg" alt="Secure banking">
-
     </div>
 
-
-
     <!-- RIGHT LOGIN FORM -->
-
     <div class="login-panel">
 
       <h2>Welcome to PayNest</h2>
@@ -40,19 +28,13 @@
         Secure Online Bill Payments
       </p>
 
-
-      <!-- ERROR MESSAGE -->
-
+      <!-- ERROR -->
       <div *ngIf="errorMessage" class="error-box">
         {{ errorMessage }}
       </div>
 
-
-
       <!-- LOGIN MODE -->
-
       <div class="login-toggle">
-
         <button
           type="button"
           [class.active]="loginMode === 'USER'"
@@ -66,34 +48,44 @@
           (click)="setMode('ADMIN')">
           Admin Login
         </button>
-
       </div>
 
-
-      <!-- LOGIN FORM -->
-
+      <!-- FORM -->
       <form (ngSubmit)="login()" #loginForm="ngForm">
 
+        <!-- EMAIL -->
         <label>Email Address</label>
+        <div class="input-group">
+          <input
+            type="email"
+            [(ngModel)]="email"
+            name="email"
+            required
+            placeholder="Enter your email"
+          />
+        </div>
 
-        <input
-          type="email"
-          [(ngModel)]="email"
-          name="email"
-          required
-        />
-
-
+        <!-- PASSWORD -->
         <label>Password</label>
+        <div class="input-group password-group">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            [(ngModel)]="password"
+            name="password"
+            required
+            placeholder="Enter your password"
+          />
 
-        <input
-          type="password"
-          [(ngModel)]="password"
-          name="password"
-          required
-        />
+          <!-- 👁 ICON -->
+          <i
+            class="fa-solid"
+            [class.fa-eye]="!showPassword"
+            [class.fa-eye-slash]="showPassword"
+            (click)="togglePassword()"
+          ></i>
+        </div>
 
-
+        <!-- BUTTON -->
         <button
           type="submit"
           [disabled]="loading || !loginForm.form.valid">
@@ -104,15 +96,12 @@
 
       </form>
 
-
+      <!-- LINKS -->
       <div class="login-links">
-
         <a routerLink="/forgot-password">
           Forgot your password?
         </a>
-
       </div>
-
 
     </div>
 
