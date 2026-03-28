@@ -11,7 +11,7 @@ const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 /* =========================
-   GLOBAL EMAIL TRANSPORTER
+   EMAIL TRANSPORTER
 ========================= */
 const transporter = nodemailer.createTransport({
   host: 'smtp.mail.yahoo.com',
@@ -23,14 +23,11 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-
 /* =========================
    REGISTER
 ========================= */
 router.post('/register', async (req, res) => {
-
   try {
-
     const { fullName, email, password, trn } = req.body;
 
     if (!fullName || !email || !password || !trn) {
@@ -62,11 +59,8 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await db.query(
-      `
-      INSERT INTO users 
-      (full_name, email, password, trn, role)
-      VALUES (?, ?, ?, ?, 'USER')
-      `,
+      `INSERT INTO users (full_name, email, password, trn, role)
+       VALUES (?, ?, ?, ?, 'USER')`,
       [fullName, email, hashedPassword, trn]
     );
 
@@ -75,30 +69,22 @@ router.post('/register', async (req, res) => {
     });
 
   } catch (err) {
-
     console.error('Register error:', err);
-
-    res.status(500).json({
-      message: 'Server error'
-    });
-
+    res.status(500).json({ message: 'Server error' });
   }
-
 });
 
-
 /* =========================
-   LOGIN
+   LOGIN (FIXED)
 ========================= */
 router.post('/login', async (req, res) => {
-
   try {
-
     const { email, password, role } = req.body;
 
-    if (!email || !password || !role) {
+    // ✅ FIX: role is optional now
+    if (!email || !password) {
       return res.status(400).json({
-        message: 'Email, password and role are required'
+        message: 'Email and password are required'
       });
     }
 
@@ -115,6 +101,7 @@ router.post('/login', async (req, res) => {
 
     const user = results[0];
 
+    // ✅ bcrypt compare (correct)
     const validPassword = await bcrypt.compare(password, user.password);
 
     if (!validPassword) {
@@ -123,26 +110,22 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    /* =========================
-       ROLE VALIDATION
-    ========================= */
+    // ✅ FIX: safe role handling
+    const loginRole = role || 'USER';
 
-    if (role === 'ADMIN' && user.role !== 'ADMIN') {
+    if (loginRole === 'ADMIN' && user.role !== 'ADMIN') {
       return res.status(403).json({
         message: 'User is not an admin'
       });
     }
 
-    if (role === 'USER' && user.role === 'ADMIN') {
+    if (loginRole === 'USER' && user.role === 'ADMIN') {
       return res.status(403).json({
-        message: 'Admins must login from the Admin tab'
+        message: 'Admins must login from Admin tab'
       });
     }
 
-    /* =========================
-       CREATE JWT
-    ========================= */
-
+    // ✅ JWT
     const token = jwt.sign(
       {
         id: user.id,
@@ -165,25 +148,18 @@ router.post('/login', async (req, res) => {
     });
 
   } catch (err) {
-
     console.error('Login error:', err);
-
     res.status(500).json({
       message: 'Server error'
     });
-
   }
-
 });
-
 
 /* =========================
    FORGOT PASSWORD
 ========================= */
 router.post('/forgot-password', async (req, res) => {
-
   try {
-
     const { email } = req.body;
 
     const [users] = await db.query(
@@ -192,24 +168,19 @@ router.post('/forgot-password', async (req, res) => {
     );
 
     if (users.length > 0) {
-
       const user = users[0];
 
       const resetToken = crypto.randomBytes(32).toString('hex');
-
       const expiry = new Date(Date.now() + 30 * 60 * 1000);
 
       await db.query(
-        `
-        UPDATE users 
-        SET reset_token = ?, 
-            reset_token_expiry = ? 
-        WHERE id = ?
-        `,
+        `UPDATE users 
+         SET reset_token = ?, reset_token_expiry = ? 
+         WHERE id = ?`,
         [resetToken, expiry, user.id]
       );
 
-      const resetLink = `http://localhost:4200/reset-password?token=${resetToken}`;
+      const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
 
       await transporter.sendMail({
         from: `"PayNest Support" <${process.env.EMAIL_USER}>`,
@@ -220,15 +191,14 @@ router.post('/forgot-password', async (req, res) => {
             <h2 style="color:#0066ff;">PayNest Password Reset</h2>
             <p>Hello ${user.full_name},</p>
             <p>You requested to reset your password.</p>
-            <a href="${resetLink}"
-              style="display:inline-block;padding:12px 24px;background:#0066ff;color:white;text-decoration:none;border-radius:6px;">
+            <a href="${resetLink}" 
+               style="padding:12px 24px;background:#0066ff;color:white;border-radius:6px;text-decoration:none;">
               Reset Password
             </a>
-            <p style="margin-top:20px;">This link expires in 30 minutes.</p>
+            <p>This link expires in 30 minutes.</p>
           </div>
         `
       });
-
     }
 
     res.json({
@@ -236,33 +206,22 @@ router.post('/forgot-password', async (req, res) => {
     });
 
   } catch (err) {
-
     console.error('Forgot password error:', err);
-
-    res.status(500).json({
-      message: 'Server error'
-    });
-
+    res.status(500).json({ message: 'Server error' });
   }
-
 });
-
 
 /* =========================
    RESET PASSWORD
 ========================= */
 router.post('/reset-password', async (req, res) => {
-
   try {
-
     const { token, newPassword } = req.body;
 
     const [users] = await db.query(
-      `
-      SELECT * FROM users 
-      WHERE reset_token = ? 
-      AND reset_token_expiry > NOW()
-      `,
+      `SELECT * FROM users 
+       WHERE reset_token = ? 
+       AND reset_token_expiry > NOW()`,
       [token]
     );
 
@@ -273,17 +232,12 @@ router.post('/reset-password', async (req, res) => {
     }
 
     const user = users[0];
-
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     await db.query(
-      `
-      UPDATE users 
-      SET password = ?, 
-          reset_token = NULL,
-          reset_token_expiry = NULL
-      WHERE id = ?
-      `,
+      `UPDATE users 
+       SET password = ?, reset_token = NULL, reset_token_expiry = NULL
+       WHERE id = ?`,
       [hashedPassword, user.id]
     );
 
@@ -292,16 +246,9 @@ router.post('/reset-password', async (req, res) => {
     });
 
   } catch (err) {
-
     console.error('Reset password error:', err);
-
-    res.status(500).json({
-      message: 'Server error'
-    });
-
+    res.status(500).json({ message: 'Server error' });
   }
-
 });
-
 
 module.exports = router;
