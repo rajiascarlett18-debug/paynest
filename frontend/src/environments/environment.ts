@@ -4,9 +4,7 @@
 
 export const environment = {
   production: false,
-
-  // Backend API
-  apiUrl: 'http://localhost:3000/api',
+  apiUrl: 'http://localhost:5000/api',
 
   // Stripe Test Publishable Key
   stripePublicKey: 'pk_test_51T4c2UCvfnCRT8ksfOZytaCzkuRob82jFijdOiPk73ydNZG8D2Rzg3jLvi2xCyetW5aHR5jpsQ6drOLSiw9t2weh007p9vq9D4',
