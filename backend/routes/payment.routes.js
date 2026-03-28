@@ -37,29 +37,45 @@ router.post('/pay-bill', auth, async (req, res) => {
     }
 
     /* ===============================
-       2️⃣ CREATE STRIPE PAYMENT INTENT
+       2️⃣ GET USER DETAILS FIRST 🔥
+    ================================ */
+    const [users] = await db.query(
+      `SELECT full_name, email FROM users WHERE id = ?`,
+      [userId]
+    );
+
+    const user = users[0];
+
+    /* ===============================
+       3️⃣ CREATE STRIPE PAYMENT INTENT
     ================================ */
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(Number(bill.amount) * 100),
       currency: 'usd',
+
       automatic_payment_methods: {
         enabled: true,
         allow_redirects: 'never'
       },
-      payment_method: 'pm_card_visa', // Stripe test card
+
+      payment_method: 'pm_card_visa', // test card
       confirm: true,
+
+      receipt_email: user?.email, // ✅ show email in Stripe
+
       metadata: {
         billId: bill.id.toString(),
-        userId: userId.toString()
+        userId: userId.toString(),
+        customerName: user?.full_name // ✅ show name in Stripe
       }
     });
 
     /* ===============================
-       3️⃣ IF PAYMENT SUCCEEDED
+       4️⃣ IF PAYMENT SUCCEEDED
     ================================ */
     if (paymentIntent.status === 'succeeded') {
 
-      // 🔹 Insert transaction
+      // 🔹 Save transaction
       await db.query(
         `
         INSERT INTO transactions 
@@ -75,7 +91,7 @@ router.post('/pay-bill', auth, async (req, res) => {
         ]
       );
 
-      // 🔹 Update bill
+      // 🔹 Update bill (requires paid_date column)
       await db.query(
         `
         UPDATE bills
@@ -87,14 +103,6 @@ router.post('/pay-bill', auth, async (req, res) => {
       );
 
       /* ===============================
-         4️⃣ GET USER DETAILS
-      ================================ */
-      const [users] = await db.query(
-        `SELECT full_name, email FROM users WHERE id = ?`,
-        [userId]
-      );
-
-      /* ===============================
          5️⃣ SEND RESPONSE FIRST ✅
       ================================ */
       res.status(200).json({
@@ -103,24 +111,21 @@ router.post('/pay-bill', auth, async (req, res) => {
       });
 
       /* ===============================
-         6️⃣ SEND EMAIL (ASYNC SAFE) 🔥
+         6️⃣ SEND EMAIL (SAFE) 🔥
       ================================ */
-      if (users.length > 0) {
-        const user = users[0];
-
+      if (user) {
         sendReceiptEmail(user.email, {
           name: user.full_name,
           amount: bill.amount,
           billName: bill.name,
           transactionId: paymentIntent.id,
           paidDate: new Date().toLocaleString()
-        }).catch(emailError => {
-          console.error('Email failed:', emailError);
+        }).catch(err => {
+          console.error('Email failed:', err);
         });
       }
 
-      return; // 🔥 STOP EXECUTION
-
+      return;
     }
 
     return res.status(400).json({
