@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +32,7 @@ sendMessage() {
 
   this.messages.push({ text: 'Typing...', sender: 'bot' });
 
-  this.http.post<any>('http://localhost:3000/api/chat', {
+  this.http.post<any>(`${environment.apiUrl}/chat`, {
     message: userText
   }).subscribe({
     next: (res) => {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-reset-password',
@@ -17,7 +18,7 @@ export class ResetPasswordComponent implements OnInit {
   error: string = '';
   loading: boolean = false;
 
-  private API_URL = 'http://localhost:3000/api/auth';
+  private API_URL = `${environment.apiUrl}/auth`;
 
   constructor(
     private route: ActivatedRoute,

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-forgot-password',
@@ -13,7 +14,7 @@ export class ForgotPasswordComponent {
   error: string = '';
   loading: boolean = false;
 
-  private API_URL = 'http://localhost:3000/api/auth';
+  private API_URL = `${environment.apiUrl}/auth`;
 
   constructor(private http: HttpClient) {}
 

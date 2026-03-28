@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, tap } from 'rxjs';
+import { environment } from 'src/environments/environment.prod';
 
 export interface User {
   id: number;
@@ -16,7 +17,7 @@ export interface User {
 })
 export class AuthService {
 
-  private API_URL = 'http://localhost:3000/api';
+  private API_URL = environment.apiUrl;
 
   // Reactive user state across the entire app
   private userSubject = new BehaviorSubject<User | null>(this.getStoredUser());
