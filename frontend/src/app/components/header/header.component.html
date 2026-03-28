@@ -1,0 +1,139 @@
+<header class="navbar">
+
+  <!-- =========================
+       LOGO (Conditional Click)
+  ========================== -->
+
+  <!-- 🔒 ADMIN (Not Clickable) -->
+  <div *ngIf="isAdmin" class="logo admin-logo">
+    <img
+      src="assets/paynestt.png"
+      alt="PayNest Logo"
+      class="logo-icon"
+    />
+    <span class="logo-text">PayNest</span>
+  </div>
+
+  <!-- 👤 NORMAL USERS (Clickable) -->
+  <div
+    *ngIf="!isAdmin"
+    class="logo"
+    (click)="goHome(); closeMenu()"
+    role="button"
+    tabindex="0">
+
+    <img
+      src="assets/paynestt.png"
+      alt="PayNest Logo"
+      class="logo-icon"
+    />
+
+    <span class="logo-text">PayNest</span>
+  </div>
+
+  <!-- =========================
+       HAMBURGER (Mobile Only)
+  ========================== -->
+  <button class="hamburger"
+          (click)="toggleMenu()"
+          [class.active]="menuOpen">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- =========================
+       NAVIGATION
+  ========================== -->
+  <nav [class.open]="menuOpen">
+
+    <!-- =========================
+         ADMIN NAV
+    ========================== -->
+    <ng-container *ngIf="isAdmin">
+
+      <a
+        routerLink="/admin"
+        routerLinkActive="active-link"
+        (click)="closeMenu()">
+        Admin Dashboard
+      </a>
+
+      <button
+        class="logout-btn"
+        (click)="logout(); closeMenu()">
+        Logout
+      </button>
+
+    </ng-container>
+
+    <!-- =========================
+         NORMAL USER / PUBLIC NAV
+    ========================== -->
+    <ng-container *ngIf="!isAdmin">
+
+      <a routerLink="/services"
+         routerLinkActive="active-link"
+         (click)="closeMenu()">Services</a>
+
+      <a routerLink="/history"
+         routerLinkActive="active-link"
+         (click)="closeMenu()">About Us</a>
+
+      <a routerLink="/locations"
+         routerLinkActive="active-link"
+         (click)="closeMenu()">Locations</a>
+
+      <a routerLink="/faq"
+         routerLinkActive="active-link"
+         (click)="closeMenu()">FAQ</a>
+
+      <a routerLink="/contact"
+         routerLinkActive="active-link"
+         (click)="closeMenu()">Contact</a>
+
+      <!-- Logged Out -->
+      <ng-container *ngIf="!user">
+
+        <a routerLink="/login"
+           routerLinkActive="active-link"
+           class="nav-btn login-btn"
+           (click)="closeMenu()">
+          Login
+        </a>
+
+        <a routerLink="/register"
+           routerLinkActive="active-link"
+           class="nav-btn register-btn"
+           (click)="closeMenu()">
+          Register
+        </a>
+
+      </ng-container>
+
+      <!-- Logged In Normal User -->
+      <ng-container *ngIf="user && !isAdmin">
+
+        <a routerLink="/dashboard"
+           routerLinkActive="active-link"
+           (click)="closeMenu()">
+          Dashboard
+        </a>
+
+        <span class="user-name">
+          {{ user.fullName?.split(' ')[0] }}
+        </span>
+
+        <button
+          class="logout-btn"
+          (click)="logout(); closeMenu()">
+          Logout
+        </button>
+
+      </ng-container>
+
+    </ng-container>
+
+  </nav>
+
+</header>

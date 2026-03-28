@@ -1,0 +1,73 @@
+<div class="contact-page">
+
+  <!-- HERO -->
+  <section class="page-header">
+    <div class="hero-content">
+      <h1>Contact Us</h1>
+      <p>Contacting us is as simple as filling out the form below. We will respond to all customer queries within 48-hours.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section class="contact-wrapper">
+
+    <!-- FORM -->
+    <form (ngSubmit)="submitForm()">
+
+      <input
+        type="text"
+        [(ngModel)]="formData.name"
+        name="name"
+        placeholder="Name"
+        required
+      />
+
+      <input
+        type="email"
+        [(ngModel)]="formData.email"
+        name="email"
+        placeholder="Email"
+        required
+      />
+
+      <input
+        type="text"
+        [(ngModel)]="formData.subject"
+        name="subject"
+        placeholder="Subject"
+      />
+
+      <textarea
+        [(ngModel)]="formData.message"
+        name="message"
+        placeholder="Message"
+        required>
+      </textarea>
+
+      <button type="submit">
+        Send Message
+      </button>
+
+    </form>
+
+    <!-- CONTACT INFO -->
+    <div class="contact-info">
+      <h3>Paynest Customer Support</h3>
+      <p>Email: support@paynest.com</p>
+      <p>Phone: (876) 555-PAYN</p>
+      <p>12 South Camp Road,</p>
+      <p>Kingston, Jamaica</p>
+    </div>
+
+  </section>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" *ngIf="showModal">
+    <div class="modal-box">
+      <h3>{{ modalTitle }}</h3>
+      <p>{{ modalMessage }}</p>
+      <button (click)="closeModal()">OK</button>
+    </div>
+  </div>
+
+</div>

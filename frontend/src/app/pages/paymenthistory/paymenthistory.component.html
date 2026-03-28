@@ -1,0 +1,37 @@
+
+<div class="paymenthistory-page">
+
+  <section class="page-header">
+    <h1>Payment History</h1>
+    <p>All previously paid bills for your account.</p>
+  </section>
+
+  <section class="history-list">
+
+    <div *ngIf="loading" class="loading">
+      Loading payment history...
+    </div>
+
+    <div *ngIf="!loading && payments.length === 0" class="no-history">
+      No payment history found.
+    </div>
+
+    <div class="history-card" *ngFor="let payment of payments">
+
+      <div class="history-row">
+        <span class="bill-name">{{ payment.name }}</span>
+        <span class="bill-amount">
+          ${{ payment.amount | number:'1.2-2' }}
+        </span>
+      </div>
+
+      <div class="history-row small">
+        <span>Paid On:</span>
+        <span>{{ payment.paidDate | date:'MMM d, y' }}</span>
+      </div>
+
+    </div>
+
+  </section>
+
+</div>

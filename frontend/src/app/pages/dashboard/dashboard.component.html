@@ -1,0 +1,157 @@
+<section class="dashboard-container">
+
+  <div class="dashboard-header">
+    <h1>
+      Welcome {{ user?.fullName }} to
+      <span class="highlight">PayNest</span>
+    </h1>
+
+    <p>
+      Manage your accounts, view payments, and stay on top of your bills.
+    </p>
+
+    <button class="btn-secondary logout-btn" (click)="logout()">
+      Logout
+    </button>
+  </div>
+
+
+  <div class="dashboard-grid">
+
+    <!-- =========================
+         USER SUMMARY
+    ========================== -->
+    <div class="card user-card">
+
+      <h2>User Summary</h2>
+
+      <p>
+        <strong>Name:</strong>
+        {{ user?.fullName }}
+      </p>
+
+      <p>
+        <strong>Email:</strong>
+        {{ user?.email }}
+      </p>
+
+      <p>
+        <strong>TRN:</strong>
+        {{ user?.trn }}
+      </p>
+
+    </div>
+
+
+    <!-- =========================
+         UPCOMING BILLS
+    ========================== -->
+    <div class="card bills-card">
+
+      <h2>Upcoming Bills</h2>
+
+      <div *ngIf="!loading && upcomingBills.length > 0; else noBills">
+
+        <div class="bill" *ngFor="let bill of upcomingBills">
+
+          <span class="bill-name">
+            {{ bill.name }}
+          </span>
+
+          <span class="bill-amount">
+            ${{ bill.amount | number:'1.2-2' }}
+          </span>
+
+          <span class="bill-date">
+            {{ bill.dueDate | date:'MMM d, y' }}
+          </span>
+
+        </div>
+
+      </div>
+
+      <ng-template #noBills>
+        <p>No upcoming bills</p>
+      </ng-template>
+
+    </div>
+
+
+    <!-- =========================
+         QUICK ACTIONS
+    ========================== -->
+    <div class="card actions-card">
+
+      <h2>Quick Actions</h2>
+
+      <button routerLink="/payments" class="btn-primary">
+        Pay a Bill
+      </button>
+
+
+      <!-- PAYMENT HISTORY DROPDOWN -->
+      <div class="history-dropdown-wrapper">
+
+        <button
+          class="btn-secondary"
+          (click)="toggleHistoryDropdown()">
+
+          View Payment History
+
+        </button>
+
+
+        <div
+          class="history-dropdown"
+          *ngIf="showHistoryDropdown">
+
+          <div
+            *ngIf="recentPayments.length === 0"
+            class="empty">
+
+            No recent payments
+
+          </div>
+
+
+          <div
+            class="recent-item"
+            *ngFor="let payment of recentPayments">
+
+            <div class="recent-row">
+
+              <span>
+                {{ payment.name }}
+              </span>
+
+              <span class="amount">
+                ${{ payment.amount | number:'1.2-2' }}
+              </span>
+
+            </div>
+
+
+            <div class="recent-date">
+              {{ payment.paidDate | date:'MMM d, y' }}
+            </div>
+
+          </div>
+
+
+          <button
+            routerLink="/paymenthistory"
+            class="view-more-btn">
+
+            View Full History →
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

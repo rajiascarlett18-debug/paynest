@@ -1,0 +1,145 @@
+<footer class="footer" [class.admin-footer]="isAdmin">
+
+  <!-- ===== FOLLOW US SECTION ===== -->
+  <div class="footer-top">
+    <div class="footer-container">
+
+      <div class="social-wrapper">
+        <span class="follow-text">Follow Us:</span>
+
+        <div class="social-icons">
+
+          <!-- Disable links for admin -->
+          <a *ngIf="!isAdmin"
+             href="https://www.facebook.com"
+             target="_blank"
+             class="social-link">
+            <img src="assets/icons/facebook.png" alt="Facebook" loading="lazy">
+          </a>
+
+          <img *ngIf="isAdmin"
+               src="assets/icons/facebook.png"
+               alt="Facebook"
+               class="social-disabled"
+               loading="lazy">
+
+          <a *ngIf="!isAdmin"
+             href="https://www.instagram.com"
+             target="_blank"
+             class="social-link">
+            <img src="assets/icons/instagram.png" alt="Instagram" loading="lazy">
+          </a>
+
+          <img *ngIf="isAdmin"
+               src="assets/icons/instagram.png"
+               alt="Instagram"
+               class="social-disabled"
+               loading="lazy">
+
+          <a *ngIf="!isAdmin"
+             href="https://twitter.com"
+             target="_blank"
+             class="social-link">
+            <img src="assets/icons/twitter.png" alt="Twitter" loading="lazy">
+          </a>
+
+          <img *ngIf="isAdmin"
+               src="assets/icons/twitter.png"
+               alt="Twitter"
+               class="social-disabled"
+               loading="lazy">
+
+          <a *ngIf="!isAdmin"
+             href="https://www.tiktok.com"
+             target="_blank"
+             class="social-link">
+            <img src="assets/icons/tiktok.png" alt="TikTok" loading="lazy">
+          </a>
+
+          <img *ngIf="isAdmin"
+               src="assets/icons/tiktok.png"
+               alt="TikTok"
+               class="social-disabled"
+               loading="lazy">
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ===== MAIN FOOTER ===== -->
+  <div class="footer-main">
+    <div class="footer-container footer-grid">
+
+      <!-- BRAND -->
+      <div class="footer-brand">
+        <h2 class="brand">PayNest</h2>
+        <p>Making bill payments smarter, faster, and easier for everyone.</p>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <ul>
+          <li>
+            <a *ngIf="!isAdmin" routerLink="/">Home</a>
+            <span *ngIf="isAdmin">Home</span>
+          </li>
+          <li>
+            <a *ngIf="!isAdmin" routerLink="/login">Login</a>
+            <span *ngIf="isAdmin">Login</span>
+          </li>
+          <li>
+            <a *ngIf="!isAdmin" routerLink="/register">Register</a>
+            <span *ngIf="isAdmin">Register</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- SUPPORT -->
+      <div class="footer-column">
+        <h3>Support</h3>
+        <ul>
+          <li>
+            <a *ngIf="!isAdmin" routerLink="/contact">Contact Us</a>
+            <span *ngIf="isAdmin">Contact Us</span>
+          </li>
+          <li>
+            <a *ngIf="!isAdmin" routerLink="/privacy">Privacy Policy</a>
+            <span *ngIf="isAdmin">Privacy Policy</span>
+          </li>
+          <li>
+            <a *ngIf="!isAdmin" routerLink="/faq">FAQs</a>
+            <span *ngIf="isAdmin">FAQs</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="footer-column">
+        <h3>Contact</h3>
+
+        <p>
+          Email:
+          <a *ngIf="!isAdmin" href="mailto:support@paynest.com">
+            support@paynest.com
+          </a>
+          <span *ngIf="isAdmin">support@paynest.com</span>
+        </p>
+
+        <p>Phone: (876) 555-PAYN</p>
+        <p>Kingston, Jamaica</p>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ===== BOTTOM ===== -->
+  <div class="footer-bottom">
+    <p>© {{ currentYear }} PayNest. All rights reserved.</p>
+  </div>
+
+</footer>

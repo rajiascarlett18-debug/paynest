@@ -1,0 +1,209 @@
+<!-- =========================
+   HERO SECTION
+========================= -->
+<section class="hero">
+
+  <!-- Background Image -->
+  <img
+    src="assets/hero2.png"
+    alt="PayNest digital bill payment platform"
+    class="hero-bg"
+    fetchpriority="high"
+    decoding="async"
+  />
+
+  <!-- Overlay -->
+  <div class="hero-overlay"></div>
+
+  <div class="hero-inner">
+
+    <!-- LEFT SIDE -->
+    <div class="hero-text">
+      <h1>
+        Manage Your Bills <br />
+        The Smart Way with <span class="brand">PayNest</span>
+      </h1>
+
+      <p class="subtitle">
+        A secure, modern platform that brings your bills, payments,
+        and history together in one powerful dashboard.
+      </p>
+
+      <!-- CTA BUTTONS (LOGGED OUT) -->
+      <div class="hero-buttons" *ngIf="!isLoggedIn">
+        <a routerLink="/login" class="btn-primary">Login</a>
+        <a routerLink="/register" class="btn-secondary">Register Here</a>
+      </div>
+
+      <!-- CTA BUTTON (LOGGED IN) -->
+      <div class="hero-buttons" *ngIf="isLoggedIn">
+        <a routerLink="/dashboard" class="btn-primary">Go to Dashboard</a>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE SUMMARY (LOGGED IN ONLY) -->
+    <div class="hero-visual" *ngIf="isLoggedIn">
+
+      <div class="card-glass">
+        <h3>Total Bills</h3>
+        <p class="amount">
+          ${{ totalAmount | number:'1.2-2' }}
+        </p>
+        <p class="small">Live balance</p>
+      </div>
+
+      <div class="card-glass small-card" *ngIf="nextBill">
+        <h4>Next Payment</h4>
+        <p class="due">
+          {{ nextBill.name }} – Due
+          <span class="due-date">
+            {{ nextBill.dueDate | date:'MMM d, y' }}
+          </span>
+        </p>
+      </div>
+
+      <div class="card-glass small-card" *ngIf="!nextBill">
+        <h4>No Pending Bills</h4>
+        <p class="due">You're all caught up!</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =========================
+   FEATURES
+========================= -->
+<section class="features">
+  <h2 class="section-title">Why PayNest?</h2>
+
+  <div class="feature-grid">
+
+    <div class="feature-card">
+      <div class="icon-circle">💳</div>
+      <h3>Unified Bill Management</h3>
+      <p>Access all your bills with one TRN. No more juggling multiple websites.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="icon-circle">⚡</div>
+      <h3>Instant, Secure Payments</h3>
+      <p>Bank-level encryption with lightning fast processing.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="icon-circle">📊</div>
+      <h3>Smart Insights</h3>
+      <p>Track spending, upcoming bills, and payment history effortlessly.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =========================
+   TESTIMONIALS
+========================= -->
+<section class="testimonials">
+  <h2 class="section-title">What Our Users Say</h2>
+
+  <div class="testimonial-grid">
+
+    <div class="testimonial-card">
+      <div class="stars">⭐ ⭐ ⭐ ⭐ ☆</div>
+      <p class="quote">
+        “PayNest makes bill payments effortless.
+        I cleared all my utilities in under two minutes.”
+      </p>
+      <span class="author">— Andre M., Kingston</span>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="stars">⭐ ⭐ ⭐ ⭐ ⭐</div>
+      <p class="quote">
+        “Finally one platform that shows all my bills clearly.
+        Clean, fast, and secure.”
+      </p>
+      <span class="author">— Shanice L., Montego Bay</span>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="stars">⭐ ⭐ ⭐ ⭐ ⭐</div>
+      <p class="quote">
+        “The dashboard and payment flow feel just like a real banking app.”
+      </p>
+      <span class="author">— Michael R., Ocho Rios</span>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =========================
+   TRN LOOKUP (PUBLIC SAFE)
+========================= -->
+<section class="lookup">
+  <h2 class="section-title">Quick Bill Lookup</h2>
+
+  <form
+    [formGroup]="trnForm"
+    (ngSubmit)="onSubmit()"
+    class="lookup-form"
+  >
+    <input
+      type="text"
+      formControlName="trn"
+      placeholder="Enter your TRN"
+      maxlength="9"
+      inputmode="numeric"
+    />
+
+    <button
+      type="submit"
+      [disabled]="trnForm.invalid || loading"
+    >
+      {{ loading ? 'Searching...' : 'Search' }}
+    </button>
+  </form>
+
+
+ <!-- =========================
+     LOOKUP RESULTS (MODERN)
+========================= -->
+
+<div *ngIf="!loading && userExists !== null">
+
+  <!-- USER NOT FOUND -->
+  <div *ngIf="userExists === false"
+       class="lookup-result lookup-error">
+    <span class="icon">⚠️</span>
+    User does not exist.
+  </div>
+
+  <!-- USER EXISTS -->
+  <div *ngIf="userExists === true">
+
+    <!-- NO BILLS -->
+    <div *ngIf="lookupCount === 0"
+         class="lookup-result lookup-info">
+      <span class="icon">ℹ️</span>
+      No outstanding bills.
+    </div>
+
+    <!-- HAS BILLS -->
+    <div *ngIf="lookupCount && lookupCount > 0"
+         class="lookup-result lookup-success">
+      <span class="icon">💳</span>
+      {{ lookupCount }}
+      bill{{ lookupCount === 1 ? '' : 's' }}
+      outstanding.
+    </div>
+
+  </div>
+
+</div>
+
+
+</section>

@@ -1,0 +1,200 @@
+<section class="payments-container">
+
+  <!-- HEADER -->
+  <div class="payments-header">
+    <h1>Secure Checkout</h1>
+    <p>Review your bills and complete payment securely.</p>
+  </div>
+
+  <div class="payments-grid">
+
+    <!-- =========================
+         PAYMENT SUMMARY
+    ========================== -->
+    <div class="card bill-summary">
+      <h2>Payment Summary</h2>
+
+      <div *ngIf="cart.length > 0; else noBill">
+
+        <div
+          class="cart-item"
+          *ngFor="let bill of cart; let i = index"
+        >
+          <div>
+            <strong>{{ bill.name }}</strong>
+            <p class="due">
+              Due {{ bill.dueDate | date:'mediumDate' }}
+            </p>
+          </div>
+
+          <div class="cart-right">
+            <span>
+              ${{ bill.amount | number:'1.2-2' }}
+            </span>
+
+            <button
+              type="button"
+              class="remove-btn"
+              (click)="removeFromCart(i)"
+              [attr.aria-label]="'Remove ' + bill.name"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <div class="summary-row total">
+          <span>Total Amount</span>
+          <strong>${{ getFormattedTotal() }}</strong>
+        </div>
+
+      </div>
+
+      <ng-template #noBill>
+        <div class="empty-state">
+          <p>No bills selected for payment.</p>
+        </div>
+      </ng-template>
+
+    </div>
+
+    <!-- =========================
+         PAYMENT FORM
+    ========================== -->
+    <div class="card payment-gateway">
+      <h2>Payment Details</h2>
+
+      <form
+        [formGroup]="paymentForm"
+        (ngSubmit)="processPayment()"
+        novalidate
+        autocomplete="on"
+      >
+
+        <!-- CARDHOLDER -->
+        <div class="field">
+          <label for="cardName">Cardholder Name</label>
+          <input
+            id="cardName"
+            type="text"
+            formControlName="cardName"
+            placeholder="John Brown"
+            autocomplete="cc-name"
+            required
+          />
+        </div>
+
+        <!-- CARD NUMBER -->
+        <div class="field">
+          <label for="cardNumber">Card Number</label>
+
+          <div class="card-input-wrapper">
+
+            <input
+              id="cardNumber"
+              type="text"
+              formControlName="cardNumber"
+              maxlength="19"
+              inputmode="numeric"
+              placeholder="1234 5678 1234 5678"
+              autocomplete="cc-number"
+              required
+            />
+
+            <img *ngIf="cardType === 'visa'"
+                 src="assets/cards/visa.png"
+                 class="card-detect-icon"
+                 alt="Visa"/>
+
+            <img *ngIf="cardType === 'mastercard'"
+                 src="assets/cards/mastercard.png"
+                 class="card-detect-icon"
+                 alt="Mastercard"/>
+
+            <img *ngIf="cardType === 'amex'"
+                 src="assets/cards/amex.svg"
+                 class="card-detect-icon"
+                 alt="Amex"/>
+
+            <img *ngIf="cardType === 'discover'"
+                 src="assets/cards/discover.svg"
+                 class="card-detect-icon"
+                 alt="Discover"/>
+
+          </div>
+        </div>
+
+        <!-- EXPIRY + CVV -->
+        <div class="field-row">
+
+          <div class="field">
+            <label for="expiry">Expiry (MM/YY)</label>
+            <input
+              id="expiry"
+              type="text"
+              formControlName="expiry"
+              maxlength="5"
+              inputmode="numeric"
+              placeholder="MM/YY"
+              autocomplete="cc-exp"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="cvv">CVV</label>
+            <input
+              id="cvv"
+              type="password"
+              formControlName="cvv"
+              maxlength="4"
+              inputmode="numeric"
+              placeholder="123"
+              autocomplete="cc-csc"
+              required
+            />
+          </div>
+
+        </div>
+
+        <!-- PAY BUTTON WITH SPINNER -->
+        <button
+          class="btn-primary pay-btn"
+          type="submit"
+          [disabled]="paymentForm.invalid || cart.length === 0 || loading"
+        >
+
+          <span *ngIf="!loading">
+            Pay ${{ getFormattedTotal() }}
+          </span>
+
+          <span *ngIf="loading" class="spinner-wrapper">
+            <span class="spinner"></span>
+            Processing...
+          </span>
+
+        </button>
+
+        <!-- SUCCESS MESSAGE -->
+        <div *ngIf="paymentStatus === 'success'" class="payment-success">
+  Payment successful!
+  <br />
+  Redirecting to dashboard in {{ countdown }}...
+</div>
+
+        <!-- ERROR MESSAGE -->
+        <div *ngIf="paymentStatus === 'error'" class="payment-error">
+          ❌ {{ errorMessage }}
+        </div>
+
+        <!-- SECURITY NOTE -->
+        <p class="secure-text">
+          🔒 Your payment information is encrypted and securely processed.
+        </p>
+
+      </form>
+    </div>
+
+  </div>
+
+</section>

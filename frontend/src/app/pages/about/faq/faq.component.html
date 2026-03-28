@@ -1,0 +1,23 @@
+<div class="faq-page">
+
+  <section class="page-header">
+    <h1>Frequently Asked Questions</h1>
+    <p>Find quick answers to common PayNest questions.</p>
+  </section>
+
+  <section class="faq-list">
+    <div class="faq-item" *ngFor="let faq of faqs; let i = index">
+
+      <button class="faq-question" (click)="toggleFAQ(i)">
+        {{ faq.question }}
+        <span [class.open]="faq.open">+</span>
+      </button>
+
+      <div class="faq-answer" [class.active]="faq.open">
+        <p>{{ faq.answer }}</p>
+      </div>
+
+    </div>
+  </section>
+
+</div>

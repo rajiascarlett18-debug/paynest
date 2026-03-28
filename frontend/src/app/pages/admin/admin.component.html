@@ -1,0 +1,263 @@
+<div class="admin-container">
+
+  <h1 class="admin-title">Admin Dashboard</h1>
+
+  <!-- =========================
+       ANALYTICS SECTION
+  ========================== -->
+
+  <section class="admin-section analytics-grid">
+
+    <div class="analytics-card">
+      <h3>Total Users</h3>
+      <p>{{ analytics.totalUsers || 0 }}</p>
+    </div>
+
+    <div class="analytics-card">
+      <h3>Total Revenue</h3>
+      <p>${{ analytics.totalRevenue || 0 }}</p>
+    </div>
+
+    <div class="analytics-card">
+      <h3>Total Unpaid</h3>
+      <p>${{ analytics.totalUnpaid || 0 }}</p>
+    </div>
+
+    <div class="analytics-card">
+      <h3>Total Transactions</h3>
+      <p>{{ analytics.totalTransactions || 0 }}</p>
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       CREATE BILL SECTION
+  ========================== -->
+
+  <section class="admin-section">
+
+    <h2>Create Bill</h2>
+
+    <div class="create-bill-form">
+
+      <select [(ngModel)]="newBill.userId">
+        <option value="">Select User</option>
+        <option *ngFor="let user of users" [value]="user.id">
+          {{ user.full_name }} ({{ user.email }})
+        </option>
+      </select>
+
+      <input
+        type="text"
+        placeholder="Bill Name"
+        [(ngModel)]="newBill.name"
+      />
+
+      <input
+        type="number"
+        placeholder="Amount"
+        [(ngModel)]="newBill.amount"
+      />
+
+      <input
+        type="date"
+        [(ngModel)]="newBill.dueDate"
+      />
+
+      <button class="primary-btn" (click)="createBill()">
+        Create Bill
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       USERS SECTION
+  ========================== -->
+
+  <section class="admin-section">
+
+    <h2>Users</h2>
+
+    <div class="table-wrapper">
+
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.full_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <span [ngClass]="{
+                'role-admin': user.role === 'ADMIN',
+                'role-user': user.role !== 'ADMIN'
+              }">
+                {{ user.role }}
+              </span>
+            </td>
+            <td>
+              <button
+                *ngIf="user.role !== 'ADMIN'"
+                class="secondary-btn"
+                (click)="promote(user.id)">
+                Promote
+              </button>
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       BILLS GROUPED BY USER
+  ========================== -->
+
+  <section class="admin-section">
+
+    <h2>Bills (Grouped by User)</h2>
+
+    <div *ngFor="let user of users" class="user-bill-group">
+
+      <!-- 🔥 FIXED: use full_name -->
+      <ng-container *ngIf="groupedBills[user.full_name]?.length">
+
+        <h3 class="user-title">
+          {{ user.full_name }}
+        </h3>
+
+        <div class="table-wrapper">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Bill Name</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Due Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <!-- 🔥 FIXED: use full_name -->
+              <tr *ngFor="let bill of groupedBills[user.full_name]">
+
+                <td>{{ bill.name }}</td>
+
+                <td>
+                  <input type="number" [(ngModel)]="bill.amount" />
+                </td>
+
+                <td>
+                  <select [(ngModel)]="bill.status">
+                    <option value="UNPAID">UNPAID</option>
+                    <option value="PAID">PAID</option>
+                  </select>
+                </td>
+
+                <td
+                  [ngClass]="{ 'due-warning': isUrgent(bill.due_date) }">
+                  {{ bill.due_date | date:'mediumDate' }}
+                </td>
+
+                <td class="action-buttons">
+                  <button
+                    class="primary-btn"
+                    (click)="updateBill(bill)">
+                    Save
+                  </button>
+
+                  <button
+                    class="danger-btn"
+                    (click)="deleteBill(bill.id)">
+                    Delete
+                  </button>
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </ng-container>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       TRANSACTIONS SECTION
+  ========================== -->
+
+  <section class="admin-section">
+
+    <h2>Transactions</h2>
+
+    <div class="table-wrapper">
+
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>Bill</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Stripe ID</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let tx of transactions">
+            <td>{{ tx.full_name }}</td>
+            <td>{{ tx.email }}</td>
+            <td>{{ tx.bill_name }}</td>
+            <td>${{ tx.amount }}</td>
+            <td>{{ tx.status }}</td>
+            <td style="font-size: 0.75rem;">
+              {{ tx.stripe_payment_intent_id }}
+            </td>
+            <td>
+              {{ tx.created_at | date:'medium' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       LOADING
+  ========================== -->
+
+  <div *ngIf="loading" class="loading-state">
+    Loading admin data...
+  </div>
+
+</div>

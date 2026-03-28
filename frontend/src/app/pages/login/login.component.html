@@ -1,0 +1,121 @@
+<div class="bank-login-page">
+
+  <!-- =============================
+       TOP WARNING BAR
+  ============================== -->
+
+  <div class="security-warning">
+
+    ⚠ Security Notice: Never share your password, PIN, or verification
+    codes with anyone. PayNest will never ask for your credentials by
+    email or phone.
+
+  </div>
+
+
+  <!-- =============================
+       MAIN LOGIN SECTION
+  ============================== -->
+
+  <div class="login-layout">
+
+
+    <!-- LEFT IMAGE -->
+
+    <div class="login-image">
+
+      <img src="assets/login1.jpg" alt="Secure banking">
+
+    </div>
+
+
+
+    <!-- RIGHT LOGIN FORM -->
+
+    <div class="login-panel">
+
+      <h2>Welcome to PayNest</h2>
+
+      <p class="subtitle">
+        Secure Online Bill Payments
+      </p>
+
+
+      <!-- ERROR MESSAGE -->
+
+      <div *ngIf="errorMessage" class="error-box">
+        {{ errorMessage }}
+      </div>
+
+
+
+      <!-- LOGIN MODE -->
+
+      <div class="login-toggle">
+
+        <button
+          type="button"
+          [class.active]="loginMode === 'USER'"
+          (click)="setMode('USER')">
+          User Login
+        </button>
+
+        <button
+          type="button"
+          [class.active]="loginMode === 'ADMIN'"
+          (click)="setMode('ADMIN')">
+          Admin Login
+        </button>
+
+      </div>
+
+
+      <!-- LOGIN FORM -->
+
+      <form (ngSubmit)="login()" #loginForm="ngForm">
+
+        <label>Email Address</label>
+
+        <input
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          required
+        />
+
+
+        <label>Password</label>
+
+        <input
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
+
+
+        <button
+          type="submit"
+          [disabled]="loading || !loginForm.form.valid">
+
+          {{ loading ? 'Logging in...' : 'Log In' }}
+
+        </button>
+
+      </form>
+
+
+      <div class="login-links">
+
+        <a routerLink="/forgot-password">
+          Forgot your password?
+        </a>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</div>

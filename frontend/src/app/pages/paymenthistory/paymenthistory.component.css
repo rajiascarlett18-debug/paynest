@@ -1,0 +1,139 @@
+/* =========================
+   PAYMENT HISTORY PAGE
+========================= */
+
+.paymenthistory-page {
+  min-height: 100vh;
+  padding-bottom: 120px;
+
+  background:
+    radial-gradient(circle at top right,
+      rgba(0, 102, 255, 0.15),
+      transparent 40%),
+    linear-gradient(135deg,
+      #000000 0%,
+      #000000 40%,
+      #0b1b3a 60%,
+      #000000 100%);
+
+  color: white;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.page-header {
+  padding: 120px 20px 60px;
+  text-align: center;
+  background: transparent;
+}
+
+.page-header h1 {
+  font-size: 2.7rem;
+  margin-bottom: 18px;
+  font-weight: 700;
+}
+
+.page-header p {
+  opacity: 0.85;
+  font-size: 1.1rem;
+}
+
+/* =========================
+   HISTORY LIST
+========================= */
+
+.history-list {
+  max-width: 950px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: transparent;
+}
+
+/* =========================
+   HISTORY CARD (GLASS STYLE)
+========================= */
+
+.history-card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  padding: 25px 30px;
+  border-radius: 20px;
+
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+
+  margin-bottom: 25px;
+  transition: 0.3s ease;
+}
+
+.history-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+}
+
+/* =========================
+   ROW STRUCTURE
+========================= */
+
+.history-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.history-row.small {
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+/* =========================
+   TEXT STYLING
+========================= */
+
+.bill-name {
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.bill-amount {
+  color: #00d4ff;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+/* =========================
+   STATES
+========================= */
+
+.loading,
+.no-history {
+  text-align: center;
+  opacity: 0.8;
+  margin-top: 40px;
+  font-size: 1rem;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+  .page-header {
+    padding: 100px 20px 50px;
+  }
+
+  .page-header h1 {
+    font-size: 2.2rem;
+  }
+
+  .history-card {
+    padding: 20px;
+  }
+
+}

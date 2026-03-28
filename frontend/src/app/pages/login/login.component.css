@@ -1,0 +1,349 @@
+/* =========================
+   LOGIN PAGE CONTAINER
+========================= */
+
+.bank-login-page {
+
+  min-height: 100vh;
+
+  background:
+    linear-gradient(135deg, #f3f6fb 0%, #e8eef7 100%);
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  padding-top: 80px; /* prevents navbar overlap */
+
+}
+
+
+/* =========================
+   SECURITY WARNING
+========================= */
+
+.security-warning {
+
+  background: #fe0404;
+
+  color: white;
+
+  padding: 14px 20px;
+
+  text-align: center;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+}
+
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.login-layout {
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  max-width: 1100px;
+
+  margin: 40px auto;
+
+  background: white;
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 25px 60px rgba(0,0,0,0.08),
+    0 8px 25px rgba(0,0,0,0.04);
+
+}
+
+
+/* =========================
+   LEFT IMAGE
+========================= */
+
+.login-image img {
+
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+}
+
+
+/* =========================
+   LOGIN PANEL
+========================= */
+
+.login-panel {
+
+  padding: 50px;
+
+}
+
+.login-panel h2 {
+
+  font-size: 28px;
+
+  color: #0c2d48;
+
+  font-weight: 700;
+
+  margin-bottom: 8px;
+
+}
+
+.subtitle {
+
+  color: #6b7280;
+
+  margin-bottom: 25px;
+
+}
+
+
+/* =========================
+   ERROR MESSAGE
+========================= */
+
+.error-box {
+
+  background: #fff5f5;
+
+  border: 1px solid #dc3545;
+
+  padding: 10px;
+
+  margin-bottom: 15px;
+
+  color: #dc3545;
+
+  border-radius: 8px;
+
+  font-size: 13px;
+
+}
+
+
+/* =========================
+   LOGIN TOGGLE
+========================= */
+
+.login-toggle {
+
+  display: flex;
+
+  margin-bottom: 20px;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+
+}
+
+.login-toggle button {
+
+  flex: 1;
+
+  padding: 10px;
+
+  border: 1px solid #d1d5db;
+
+  background: #f9fafb;
+
+  cursor: pointer;
+
+  font-size: 14px;
+
+  transition: 0.25s ease;
+
+}
+
+.login-toggle button:hover {
+
+  background: #e5e7eb;
+
+}
+
+.login-toggle button.active {
+
+  background: linear-gradient(135deg, #0c2d48, #143c63);
+
+  color: white;
+
+  border-color: #0c2d48;
+
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+form {
+
+  display: flex;
+
+  flex-direction: column;
+
+}
+
+form label {
+
+  font-size: 13px;
+
+  margin-bottom: 4px;
+
+  margin-top: 12px;
+
+  font-weight: 600;
+
+  color: #374151;
+
+}
+
+form input {
+
+  padding: 14px 16px;
+
+  border-radius: 12px;
+
+  border: 1px solid #d1d5db;
+
+  font-size: 15px;
+
+  background: #fafafa;
+
+  transition: 0.25s ease;
+
+}
+
+form input:focus {
+
+  border-color: #2563eb;
+
+  background: #ffffff;
+
+  outline: none;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.15);
+
+}
+
+
+/* =========================
+   LOGIN BUTTON
+========================= */
+
+form button {
+
+  width: 100%;
+
+  background: linear-gradient(135deg, #0c2d48, #143c63);
+
+  color: white;
+
+  padding: 14px;
+
+  font-size: 16px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  margin-top: 18px;
+
+  transition: all 0.25s ease;
+
+  box-shadow:
+    0 10px 25px rgba(12,45,72,0.2);
+
+}
+
+form button:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 15px 35px rgba(12,45,72,0.3);
+
+}
+
+form button:disabled {
+
+  opacity: 0.45;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+
+}
+
+
+/* =========================
+   LINKS
+========================= */
+
+.login-links {
+
+  margin-top: 18px;
+
+}
+
+.login-links a {
+
+  color: #2563eb;
+
+  font-size: 14px;
+
+  text-decoration: none;
+
+  font-weight: 600;
+
+}
+
+.login-links a:hover {
+
+  text-decoration: underline;
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 900px) {
+
+  .login-layout {
+
+    grid-template-columns: 1fr;
+
+  }
+
+  .login-image {
+
+    display: none;
+
+  }
+
+  .login-panel {
+
+    padding: 35px;
+
+  }
+
+}

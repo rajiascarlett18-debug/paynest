@@ -1,0 +1,273 @@
+/* =========================
+   DASHBOARD CONTAINER
+========================= */
+
+.dashboard-container {
+  min-height: 100vh;
+  padding: 120px 20px;
+
+  background:
+    radial-gradient(circle at top right,
+      rgba(0, 102, 255, 0.15),
+      transparent 40%),
+    linear-gradient(135deg,
+      #000000 0%,
+      #000000 40%,
+      #0b1b3a 60%,
+      #000000 100%);
+
+  color: white;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+.dashboard-header h1 {
+  font-size: 2.6rem;
+  margin-bottom: 15px;
+}
+
+.highlight {
+  color: #0066ff;
+  text-shadow: 0 0 25px rgba(0,102,255,0.6);
+}
+
+.dashboard-header p {
+  opacity: 0.85;
+  margin-bottom: 25px;
+}
+
+.logout-btn {
+  margin-top: 10px;
+}
+
+/* =========================
+   GRID
+========================= */
+
+.dashboard-grid {
+  max-width: 1200px;
+  margin: auto;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+}
+
+/* =========================
+   CARDS (GLASS STYLE)
+========================= */
+
+.card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  padding: 35px;
+  border-radius: 20px;
+
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+}
+
+.card h2 {
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+}
+
+/* =========================
+   USER SUMMARY
+========================= */
+
+.user-card p {
+  margin-bottom: 10px;
+  opacity: 0.9;
+}
+
+/* =========================
+   UPCOMING BILLS
+========================= */
+
+.bill {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.bill:last-child {
+  border-bottom: none;
+}
+
+.bill-name {
+  font-weight: 600;
+}
+
+.bill-amount {
+  color: #00d4ff;
+  font-weight: 600;
+}
+
+.bill-date {
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn-primary {
+  background: #0066ff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0,102,255,0.4);
+}
+
+.btn-primary:hover {
+  background: #004fcc;
+  transform: translateY(-3px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 12px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-3px);
+}
+
+/* =========================
+   HISTORY DROPDOWN
+========================= */
+
+.history-dropdown-wrapper {
+  position: relative;
+  display: block;
+}
+
+.history-dropdown {
+  position: absolute;
+  top: 65px;
+  right: 0;
+  width: 320px;
+
+  background: rgba(20,20,20,0.95);
+  backdrop-filter: blur(20px);
+
+  border-radius: 18px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+
+  z-index: 1000;
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.recent-item {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.recent-item:last-child {
+  border-bottom: none;
+}
+
+.recent-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+.amount {
+  color: #00d4ff;
+}
+
+.recent-date {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.view-more-btn {
+  width: 100%;
+  margin-top: 15px;
+  background: #0066ff;
+  border: none;
+  padding: 10px;
+  border-radius: 50px;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.view-more-btn:hover {
+  background: #004fcc;
+}
+
+.empty {
+  text-align: center;
+  opacity: 0.7;
+  padding: 10px 0;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+  .dashboard-header h1 {
+    font-size: 2rem;
+  }
+
+  .dashboard-container {
+    padding: 100px 20px;
+  }
+
+  .history-dropdown {
+    right: auto;
+    left: 0;
+    width: 100%;
+  }
+
+}

@@ -1,0 +1,346 @@
+/* ======================
+   GLOBAL RESET
+====================== */
+
+:host {
+  display: block;
+  font-family: 'Inter', sans-serif;
+}
+
+
+/* ======================
+   HERO SECTION
+====================== */
+
+.hero {
+  position: relative;
+  padding: 130px 40px;
+  color: white;
+  overflow: hidden;
+}
+
+/* Background image */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Dark overlay */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,0,0,0.88) 0%,
+      rgba(5, 8, 13, 0.88) 60%,
+      rgba(0, 0, 0, 0.88) 100%
+    );
+  z-index: 1;
+}
+
+/* Content */
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1300px;
+  margin: auto;
+  gap: 70px;
+}
+
+
+/* ======================
+   HERO TEXT
+====================== */
+
+.hero-text {
+  max-width: 600px;
+}
+
+.hero-text h1 {
+  font-size: 3.3rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.hero-text .subtitle {
+  font-size: 1.2rem;
+  margin: 30px 0 45px;
+  opacity: 0.9;
+}
+
+.brand {
+  color: #ffdd57;
+}
+
+
+/* ======================
+   HERO BUTTONS (UPDATED FIX)
+====================== */
+
+.hero-buttons {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  align-items: flex-start; /* Prevent stretch */
+}
+
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content; /* KEY FIX */
+  padding: 14px 32px;
+  border-radius: 30px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.25s ease;
+}
+
+/* PRIMARY */
+.btn-primary {
+  background: #ffdd57;
+  color: #1d3557;
+}
+
+.btn-primary:hover {
+  background: #ffe680;
+  transform: translateY(-2px);
+}
+
+/* SECONDARY */
+.btn-secondary {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.btn-secondary:hover {
+  background: white;
+  color: #1d3557;
+}
+
+
+/* ======================
+   HERO VISUAL CARDS
+====================== */
+
+.hero-visual {
+  min-width: 320px;
+}
+
+.card-glass {
+  backdrop-filter: blur(14px);
+  background: rgba(255,255,255,0.08);
+  padding: 28px;
+  border-radius: 18px;
+  color: white;
+  margin-bottom: 25px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  transition: 0.3s ease;
+}
+
+.card-glass:hover {
+  transform: translateY(-4px);
+}
+
+.card-glass .amount {
+  font-size: 2.3rem;
+  font-weight: 600;
+}
+
+
+/* ======================
+   FEATURES
+====================== */
+
+.features {
+  padding: 100px 20px;
+  text-align: center;
+  background: #ffffff;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: 50px;
+  color: #1d3557;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 35px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.feature-card {
+  background: white;
+  padding: 40px;
+  border-radius: 22px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.07);
+  transition: 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+}
+
+.icon-circle {
+  background: #ffdd57;
+  color: #1d3557;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  margin: auto auto 22px auto;
+}
+
+
+/* ======================
+   BILL LOOKUP
+====================== */
+
+.lookup {
+  padding: 110px 20px;
+  text-align: center;
+  background: #f5f7fa;
+}
+
+.lookup-form {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.lookup-form input {
+  padding: 14px 24px;
+  border-radius: 30px;
+  border: 2px solid #2d6cdf;
+  width: 260px;
+  outline: none;
+  transition: 0.3s ease;
+  font-size: 1rem;
+  text-align: center;
+  letter-spacing: 1px;
+  background: white;
+}
+
+.lookup-form input:focus {
+  border-color: #ffdd57;
+  box-shadow: 0 0 12px rgba(255,221,87,0.5);
+}
+
+.lookup-form input.ng-invalid.ng-touched {
+  border-color: #ff4d4f;
+}
+
+.lookup-form button {
+  padding: 14px 30px;
+  background: #000;
+  border: none;
+  border-radius: 30px;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: 600;
+}
+
+.lookup-form button:hover {
+  background: #ffdd57;
+  color: #000;
+}
+
+.lookup-form button:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+
+/* ======================
+   TESTIMONIALS
+====================== */
+
+.testimonials {
+  padding: 110px 20px;
+  background: linear-gradient(to bottom, #f5f7fa, #ffffff);
+  text-align: center;
+}
+
+.testimonial-grid {
+  max-width: 1200px;
+  margin: 60px auto 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 35px;
+}
+
+.testimonial-card {
+  background: rgba(255,255,255,0.98);
+  padding: 40px;
+  border-radius: 22px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+  transition: 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 55px rgba(0,0,0,0.15);
+}
+
+.stars {
+  font-size: 1.2rem;
+  color: #ffdd57;
+  margin-bottom: 14px;
+}
+
+.quote {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.author {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1d3557;
+}
+
+
+/* ======================
+   RESPONSIVE
+====================== */
+
+@media (max-width: 900px) {
+
+  .hero-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-visual {
+    margin-top: 50px;
+  }
+
+  .hero-text h1 {
+    font-size: 2.4rem;
+  }
+
+}

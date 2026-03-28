@@ -1,0 +1,231 @@
+/* =========================
+   REGISTER PAGE CONTAINER
+========================= */
+
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:
+    linear-gradient(135deg, #f3f6fb 0%, #e8eef7 100%);
+  padding: 40px 20px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.register-card {
+  background: #ffffff;
+  padding: 50px 40px;
+  border-radius: 22px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.08),
+    0 8px 25px rgba(0, 0, 0, 0.04);
+  transition: 0.3s ease;
+}
+
+.register-card:hover {
+  transform: translateY(-3px);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.logo {
+  width: 80px;
+  margin-bottom: 15px;
+}
+
+.header h2 {
+  font-size: 30px;
+  color: #0c2d48;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.highlight {
+  color: #f5c32c;
+}
+
+.header p {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.home-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* =========================
+   FORM FIELDS
+========================= */
+
+.field {
+  display: block;
+  margin-bottom: 22px;
+}
+
+.field span {
+  font-weight: 600;
+  font-size: 14px;
+  color: #374151;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* Input Styling */
+
+.field input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  outline: none;
+  font-size: 15px;
+  transition: 0.25s ease;
+  background: #fafafa;
+}
+
+/* Focus state */
+.field input:focus {
+  border-color: #2563eb;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Invalid state */
+.field input.ng-invalid.ng-touched {
+  border-color: #dc3545;
+  background: #fff5f5;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+}
+
+/* =========================
+   ERROR MESSAGES
+========================= */
+
+.error {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 6px;
+  font-weight: 500;
+  animation: fadeIn 0.2s ease;
+}
+
+.global-error {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.btn-primary {
+  width: 100%;
+  background: linear-gradient(135deg, #0c2d48, #143c63);
+  color: white;
+  padding: 14px;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 10px 25px rgba(12, 45, 72, 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(12, 45, 72, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Disabled */
+.btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* =========================
+   DIVIDER
+========================= */
+
+.divider {
+  text-align: center;
+  color: #9ca3af;
+  margin: 28px 0;
+  font-size: 13px;
+}
+
+/* =========================
+   REDIRECT LINK
+========================= */
+
+.redirect {
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.redirect a {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.redirect a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 480px) {
+
+  .register-card {
+    padding: 35px 25px;
+  }
+
+  .header h2 {
+    font-size: 24px;
+  }
+
+}

@@ -1,0 +1,84 @@
+<app-auth-layout>
+
+  <div class="form-header">
+    <h2>Create Your PayNest Account</h2>
+    <p>Manage all your bills in one secure place.</p>
+  </div>
+
+  <form
+    [formGroup]="registerForm"
+    (ngSubmit)="onRegister()"
+    novalidate
+  >
+
+    <!-- FULL NAME -->
+    <div class="field">
+      <label>Full Name</label>
+      <input
+        type="text"
+        formControlName="fullName"
+        placeholder="John Doe"
+      />
+    </div>
+
+    <!-- EMAIL -->
+    <div class="field">
+      <label>Email Address</label>
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="example@mail.com"
+      />
+    </div>
+
+    <!-- TRN -->
+    <div class="field">
+      <label>TRN</label>
+      <input
+        type="text"
+        formControlName="trn"
+        placeholder="123 456 789"
+        maxlength="9"
+      />
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="field">
+      <label>Password</label>
+      <input
+        type="password"
+        formControlName="password"
+        placeholder="Create password"
+      />
+    </div>
+
+    <!-- CONFIRM PASSWORD -->
+    <div class="field">
+      <label>Confirm Password</label>
+      <input
+        type="password"
+        formControlName="confirmPassword"
+        placeholder="Confirm password"
+      />
+    </div>
+
+    <div class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <button
+      type="submit"
+      class="btn-primary"
+      [disabled]="registerForm.invalid || loading"
+    >
+      {{ loading ? 'Creating Account...' : 'Create Account' }}
+    </button>
+
+    <div class="redirect">
+      Already have an account?
+      <a routerLink="/login">Login here</a>
+    </div>
+
+  </form>
+
+</app-auth-layout>

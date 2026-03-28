@@ -1,0 +1,45 @@
+<app-header></app-header>
+
+<router-outlet></router-outlet>
+
+<app-footer></app-footer>
+
+<!-- CHATBOT GOES HERE (always visible on every page) -->
+<div class="chatbot-button" (click)="toggleChat()">💬</div>
+
+<div class="chatbot-window" [class.open]="chatOpen">
+
+  <div class="chatbot-header">
+    <img src="assets/paynestt.png" loading="lazy" />
+    <span>PayNest Assistant</span>
+    <button class="close-btn" (click)="toggleChat()">×</button>
+  </div>
+
+<div class="chatbot-messages">
+
+  <div *ngFor="let m of messages" class="msg" [ngClass]="m.sender">
+    {{ m.text }}
+  </div>
+
+  <!-- 🔥 Typing Indicator -->
+  <div *ngIf="loading" class="msg bot typing">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+</div>
+
+
+  <div class="chatbot-input">
+    <input
+  type="text"
+  placeholder="Type your message..."
+  [(ngModel)]="userMessage"
+  (keydown.enter)="sendMessage()"
+/>
+
+    <button (click)="sendMessage()">Send</button>
+  </div>
+
+</div>
