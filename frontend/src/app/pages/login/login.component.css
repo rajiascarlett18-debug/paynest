@@ -131,12 +131,19 @@ form label {
   color: #374151;
 }
 
-/* 🔥 INPUT WRAPPER (NEW) */
+/* =========================
+   INPUT GROUP
+========================= */
+
 .input-group {
   position: relative;
+  margin-bottom: 12px;
 }
 
-/* INPUT */
+/* =========================
+   INPUT
+========================= */
+
 form input {
   width: 100%;
   padding: 14px 16px;
@@ -149,6 +156,7 @@ form input {
 }
 
 /* FOCUS */
+
 form input:focus {
   border-color: #2563eb;
   background: #ffffff;
@@ -157,8 +165,12 @@ form input:focus {
 }
 
 /* =========================
-   PASSWORD ICON (NEW 🔥)
+   PASSWORD ICON (FIXED)
 ========================= */
+
+.password-group {
+  position: relative;
+}
 
 .password-group i {
   position: absolute;
@@ -211,6 +223,7 @@ form button:disabled {
 
 .login-links {
   margin-top: 18px;
+  text-align: center;
 }
 
 .login-links a {

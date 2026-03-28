@@ -51,38 +51,43 @@
       </div>
 
       <!-- FORM -->
-      <form (ngSubmit)="login()" #loginForm="ngForm">
+      <form (ngSubmit)="login()" #loginForm="ngForm" novalidate>
 
         <!-- EMAIL -->
-        <label>Email Address</label>
+        <label for="email">Email Address</label>
         <div class="input-group">
           <input
+            id="email"
             type="email"
             [(ngModel)]="email"
             name="email"
             required
+            autocomplete="email"
             placeholder="Enter your email"
           />
         </div>
 
         <!-- PASSWORD -->
-        <label>Password</label>
+        <label for="password">Password</label>
         <div class="input-group password-group">
+
           <input
+            id="password"
             [type]="showPassword ? 'text' : 'password'"
             [(ngModel)]="password"
             name="password"
             required
+            autocomplete="current-password"
             placeholder="Enter your password"
           />
 
-          <!-- 👁 ICON -->
+          <!-- 👁 ICON (FIXED PROPERLY) -->
           <i
-            class="fa-solid"
-            [class.fa-eye]="!showPassword"
-            [class.fa-eye-slash]="showPassword"
+            class="fa-solid toggle-icon"
+            [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
             (click)="togglePassword()"
           ></i>
+
         </div>
 
         <!-- BUTTON -->
