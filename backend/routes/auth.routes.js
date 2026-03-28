@@ -75,13 +75,12 @@ router.post('/register', async (req, res) => {
 });
 
 /* =========================
-   LOGIN (FIXED)
+   LOGIN
 ========================= */
 router.post('/login', async (req, res) => {
   try {
     const { email, password, role } = req.body;
 
-    // ✅ FIX: role is optional now
     if (!email || !password) {
       return res.status(400).json({
         message: 'Email and password are required'
@@ -101,7 +100,6 @@ router.post('/login', async (req, res) => {
 
     const user = results[0];
 
-    // ✅ bcrypt compare (correct)
     const validPassword = await bcrypt.compare(password, user.password);
 
     if (!validPassword) {
@@ -110,7 +108,6 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // ✅ FIX: safe role handling
     const loginRole = role || 'USER';
 
     if (loginRole === 'ADMIN' && user.role !== 'ADMIN') {
@@ -125,7 +122,6 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // ✅ JWT
     const token = jwt.sign(
       {
         id: user.id,
@@ -156,11 +152,13 @@ router.post('/login', async (req, res) => {
 });
 
 /* =========================
-   FORGOT PASSWORD
+   FORGOT PASSWORD (🔥 FIXED)
 ========================= */
 router.post('/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;
+
+    console.log('📩 Forgot password request:', email);
 
     const [users] = await db.query(
       'SELECT * FROM users WHERE email = ?',
@@ -182,7 +180,17 @@ router.post('/forgot-password', async (req, res) => {
 
       const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
 
-      await transporter.sendMail({
+      /* =========================
+         🔥 SEND RESPONSE FIRST
+      ========================== */
+      res.json({
+        message: 'If an account exists, a reset link has been sent.'
+      });
+
+      /* =========================
+         🔥 SEND EMAIL AFTER RESPONSE
+      ========================== */
+      transporter.sendMail({
         from: `"PayNest Support" <${process.env.EMAIL_USER}>`,
         to: email,
         subject: 'Reset Your PayNest Password',
@@ -198,9 +206,16 @@ router.post('/forgot-password', async (req, res) => {
             <p>This link expires in 30 minutes.</p>
           </div>
         `
+      }).catch(err => {
+        console.error('Email failed:', err.message);
       });
+
+      return;
     }
 
+    /* =========================
+       ALWAYS RETURN SUCCESS
+    ========================== */
     res.json({
       message: 'If an account exists, a reset link has been sent.'
     });

@@ -19,27 +19,53 @@ export class ForgotPasswordComponent {
   constructor(private http: HttpClient) {}
 
   submit(): void {
-    if (!this.email) return;
+
+    /* =========================
+       VALIDATION
+    ========================== */
+    if (!this.email) {
+      this.error = 'Please enter your email address';
+      return;
+    }
 
     this.loading = true;
     this.message = '';
     this.error = '';
 
+    console.log('📩 Sending forgot password request:', this.email);
+
     this.http.post<any>(`${this.API_URL}/forgot-password`, {
       email: this.email
     }).subscribe({
+
+      /* =========================
+         SUCCESS
+      ========================== */
       next: (res) => {
+        console.log('✅ Response:', res);
+
         this.loading = false;
 
-        // Always same message (security best practice)
-        this.message = res.message;
+        // 🔥 fallback message (in case backend doesn't return one)
+        this.message =
+          res?.message ||
+          'If an account exists, a reset link has been sent.';
 
-        // Clear input after submit
         this.email = '';
       },
-      error: () => {
+
+      /* =========================
+         ERROR
+      ========================== */
+      error: (err) => {
+        console.error('❌ Forgot password error:', err);
+
         this.loading = false;
-        this.error = 'Something went wrong. Please try again.';
+
+        // 🔥 show backend error if exists
+        this.error =
+          err?.error?.message ||
+          'Server error. Please try again later.';
       }
     });
   }
